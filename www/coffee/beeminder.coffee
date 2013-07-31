@@ -1,28 +1,29 @@
 client = "dq9sejip1qpbyipnp5gitc724"
-base = "http://www.beeminder.com/api/v1"
+base = "https://www.beeminder.com/api/v1"
 
-class window.BeeminderSettings extends Serializable
-	token: null
-	goal: null
-
-	constructor: (@token) ->
-		root = @
-	
-		$.ajax base + '/users/santino.json',
-			type : "GET" 
-			dataType : "json"
-			data :
-				auth_token : root.token
-			
-			success  : (res, status, xhr) ->
-				root.goal = res.goals[1]
-				root.save("test")
-				
-				obj = Serializable.load(BeeminderSettings, "test")
-				obj.verify()
-				
-			error    : (xhr, status, err) ->
-			complete : (xhr, status) ->
-	
-	verify: () ->
-		echo @goal
+class window.Beeminder
+    @token: null
+    @username: null
+    @goals: null
+    
+    constructor: (@token) ->
+    
+    call: (url, success, payload) ->
+        payload = payload ? {}
+        payload.auth_token = @token
+    
+        $.ajax base + url,
+            type: "GET" 
+            dataType: "json"
+            data: payload
+            
+            success: success
+            error: (xhr, status, err) =>
+            complete: (xhr, status) =>
+            
+    init: (success) ->
+        @call '/users/me.json', 
+            (user) =>
+                @username = user.username
+                @goals = user.goals
+                success?(@)
