@@ -1,9 +1,7 @@
 client = "dq9sejip1qpbyipnp5gitc724"
 base = "http://www.beeminder.com/api/v1"
 
-echo = window.echo
-
-class BeeminderSettings extends window.Serializable
+class window.BeeminderSettings extends Serializable
 	token: null
 	goal: null
 
@@ -28,5 +26,3 @@ class BeeminderSettings extends window.Serializable
 	
 	verify: () ->
 		echo @goal
-
-window.BeeminderSettings = BeeminderSettings

@@ -1,3 +1,3 @@
 token = ""
 
-new window.BeeminderSettings token
+new BeeminderSettings token
