@@ -2,14 +2,11 @@ client = "dq9sejip1qpbyipnp5gitc724"
 base = "https://www.beeminder.com/api/v1"
 
 class window.Beeminder extends Serializable
-    @token: null
-    @username: null
-    @goals: null
-    @currentGoal:
-        slug: null
-        title: null
-        rate: null
-        
+    token: null
+    username: null
+    goals: null
+    currentGoal: null
+    
     
     constructor: (@token) ->
     
@@ -30,26 +27,24 @@ class window.Beeminder extends Serializable
         if !@username?
             @call '/users/me.json', 
                 (user) =>
-                    @username = user.username
-                    @goals = user.goals
-                    
+                    {@username, @goals} = user
                     @save "beeminder"
                     
-                    @initGoal(success)
-        else
-            @initGoal(success)
+                    success?()
+        else success?()
 
-    initGoal: (success) -> 
+    selectGoal: (slug, success) -> 
         @call "/users/#{@username}/goals/#{localStorage.goal}.json",
             (goal) =>
-                @currentGoal.slug = goal.slug
-                @currentGoal.title = goal.title
-                @currentGoal.rate = goal.rate
+                @currentGoal = 
+                    slug: slug
+                    response: goal
+                    valid: goal.goal_type == "hustler"
+                    dailyRate: goal.rate / 
+                        switch goal.runits
+                            when "y" then 365
+                            when "m" then 30
+                            when "w" then 7
+                            when "h" then 1 / 24
                 
-                switch goal.runits
-                    when "y" then @currentGoal.rate /= 365
-                    when "m" then @currentGoal.rate /= 30
-                    when "w" then @currentGoal.rate /= 7
-                    when "h" then @currentGoal.rate *= 24
-                
-                success?()
+                success? @currentGoal.valid
