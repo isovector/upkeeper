@@ -1,14 +1,14 @@
-bee = new Beeminder localStorage.token
-
-bee.init () ->
-    for goal in bee.goals
-        element = document.createElement "option"
-        element.text = goal
-        element.selected = true if goal == localStorage.goal
-        
-        ($ ".goals").append element
-
 $ ->
+    bee = Serializable.load Beeminder, "beeminder", localStorage.token
+
+    bee.init () ->
+        for goal in bee.goals
+            element = document.createElement "option"
+            element.text = goal
+            element.selected = true if goal == localStorage.goal
+            
+            ($ ".goals").append element
+
     ($ ".goals").on "change", (event) ->
         sender = event.currentTarget
         localStorage.goal = ($ ":selected", sender).text()
