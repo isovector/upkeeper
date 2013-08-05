@@ -3,11 +3,8 @@ $ ->
 
     bee.init () ->
         for goal in bee.goals
-            element = document.createElement "option"
-            element.text = goal
-            element.selected = true if goal == localStorage.goal
-            
-            ($ ".goals").append element
+            element = new Templates.GoalOption goal
+            ($ ".goals").append element.dom
         
         bee.selectGoal localStorage.goal, cache "test", (valid) ->
             echo "daily rate is #{bee.currentGoal.dailyRate}" if valid
@@ -18,6 +15,9 @@ $ ->
         localStorage.goal = ($ ":selected", sender).text()
         
         bee.selectGoal localStorage.goal, cache "test"
+        
+    taskDom = $ ".tasks"
+    taskDom.append (new Templates.Task "test").dom
         
     tokenDom = $ ".token"
     tokenDom.val localStorage.token if localStorage.token?

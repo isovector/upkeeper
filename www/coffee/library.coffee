@@ -13,11 +13,10 @@ class window.Serializable
             object = JSON.parse localStorage[name]
             object.__proto__ = constructor.prototype
             object
-        catch 
+        catch error
             new constructor defaultArgs...
 
     save: (name) -> localStorage[name] = JSON.stringify @
 
-        
 class window.Errors 
     @declare: (name) -> Errors[name] = name
