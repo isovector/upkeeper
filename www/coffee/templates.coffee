@@ -26,7 +26,7 @@ class Templates.GoalOption extends Component
             
             
 class Templates.Task extends Component
-    constructor: (task) ->
+    constructor: (task, click) ->
         super \
         """
         <li>
@@ -39,6 +39,6 @@ class Templates.Task extends Component
         =>
             (@get ".name").html task
             (@get ".add").on "click", =>
-                alert task
+                click?()
             (@get ".sub").on "click", =>
                 @destroy()

@@ -16,8 +16,24 @@ $ ->
         
         bee.selectGoal localStorage.goal, cache "test"
         
+    offset = 0
+    
     taskDom = $ ".tasks"
-    taskDom.append (new Templates.Task "test").dom
+    taskDom.append (new Templates.Task "add score",
+        ->
+            offset++
+            bee.addData "upkeep-test", offset, offset
+    ).dom
+    
+    taskDom.append (new Templates.Task "future score",
+        ->
+            bee.addData "upkeep-test", 100, -1
+    ).dom
+    
+    taskDom.append (new Templates.Task "submit score",
+        ->
+            bee.pushData "upkeep-test"
+    ).dom
         
     tokenDom = $ ".token"
     tokenDom.val localStorage.token if localStorage.token?
