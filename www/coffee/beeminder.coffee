@@ -1,11 +1,6 @@
 client = "dq9sejip1qpbyipnp5gitc724"
 base = "https://www.beeminder.com/api/v1"
 
-serialize = (obj) ->
-    str = []
-    str.push (encodeURIComponent key) + "=" + (encodeURIComponent val) for key, val of obj
-    str.join "&"
-
 class window.Beeminder extends Serializable
     token: null
     username: null
@@ -21,7 +16,7 @@ class window.Beeminder extends Serializable
         payload = payload ? {}
         payload.auth_token = @token
     
-        $.ajax "#{base}#{url}?#{serialize payload}",
+        $.ajax "#{base}#{url}",
             type: method
             dataType: 'json'
             data: payload
@@ -68,7 +63,7 @@ class window.Beeminder extends Serializable
         now.setSeconds 0
         now.setMilliseconds 0
         
-        now.getTime()
+        now.getTime()/1000|0
         
     addData: (slug, score, offset) ->
         now = @constructTimestamp() - offset ? 0
