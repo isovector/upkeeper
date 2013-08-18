@@ -1,5 +1,5 @@
 $ ->
-    bee = Serializable.load Beeminder, "beeminder", localStorage.token
+    window.bee = Serializable.load Beeminder, "beeminder", localStorage.token
 
     bee.init () ->
         for goal in bee.goals
@@ -18,19 +18,19 @@ $ ->
         
     offset = 0
     
-    taskDom = $ ".tasks"
-    taskDom.append (new Templates.Task "add score",
+    taskDom = $ ".options"
+    taskDom.append (new Templates.Option "add score",
         ->
             offset++
             bee.addData "upkeep-test", offset, offset
     ).dom
     
-    taskDom.append (new Templates.Task "future score",
+    taskDom.append (new Templates.Option "future score",
         ->
             bee.addData "upkeep-test", 100, -1
     ).dom
     
-    taskDom.append (new Templates.Task "submit score",
+    taskDom.append (new Templates.Option "submit score",
         ->
             bee.pushData "upkeep-test"
     ).dom
@@ -39,3 +39,8 @@ $ ->
     tokenDom.val localStorage.token if localStorage.token?
     
     tokenDom.on "change", (event) -> localStorage.token = tokenDom.val()
+    
+    taskDom = $ ".tasks"
+    
+    taskDom.append (new Templates.TaskButton "afro", 15).dom
+    taskDom.append (new Templates.TaskButton "dog", 1).dom

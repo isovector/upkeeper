@@ -57,17 +57,10 @@ class window.Beeminder extends Serializable
                 success? @currentGoal.valid
 
     constructTimestamp: ->
-        now = new Date()
-        now.setHours 0
-        now.setMinutes 0
-        now.setSeconds 0
-        now.setMilliseconds 0
+        Date.now()/1000|0
         
-        now.getTime()/1000|0
-        
-    addData: (slug, score, offset) ->
-        now = @constructTimestamp() - offset ? 0
-        @datapoints[slug][now] = score
+    addData: (slug, score) ->
+        @datapoints[slug][@constructTimestamp()] = score
             
 
     pushData: (slug, success) ->
