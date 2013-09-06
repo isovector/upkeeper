@@ -11,7 +11,7 @@ class window.Beeminder extends Serializable
     
     constructor: (@token) ->
     
-    call: (url, success, payload) ->
+    call: (url, success, payload, error) ->
         method = if payload? then 'POST' else 'GET'
         payload = payload ? {}
         payload.auth_token = @token
@@ -22,7 +22,7 @@ class window.Beeminder extends Serializable
             data: payload
             
             success: success
-            error: (xhr, status, err) =>
+            error: error
             complete: (xhr, status) =>
             
     init: (success) ->
@@ -59,8 +59,23 @@ class window.Beeminder extends Serializable
     constructTimestamp: ->
         Date.now()/1000|0
         
-    addData: (slug, score) ->
-        @datapoints[slug][@constructTimestamp()] = score
+    addData: (task, count = 1) ->
+        slug = "upkeep"
+        
+        comment = task.text
+        comment += " x#{count}" if count != 1
+        
+        @call "/users/me/goals/#{slug}/datapoints.json",
+            (datapoint) =>
+                alert "pushed #{task.points} to #{slug}"
+            , 
+            {
+                timestamp: @constructTimestamp()
+                value: task.points * count
+                comment: comment
+            },
+            () =>
+                alert "failed to connect to beeminder"
             
 
     pushData: (slug, success) ->

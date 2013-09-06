@@ -19,17 +19,6 @@ $ ->
     offset = 0
     
     taskDom = $ ".options"
-    taskDom.append (new Templates.Option "add score",
-        ->
-            offset++
-            bee.addData "upkeep-test", offset, offset
-    ).dom
-    
-    taskDom.append (new Templates.Option "future score",
-        ->
-            bee.addData "upkeep-test", 100, -1
-    ).dom
-    
     taskDom.append (new Templates.Option "submit score",
         ->
             bee.pushData "upkeep-test"
@@ -39,8 +28,3 @@ $ ->
     tokenDom.val localStorage.token if localStorage.token?
     
     tokenDom.on "change", (event) -> localStorage.token = tokenDom.val()
-    
-    taskDom = $ ".tasks"
-    
-    taskDom.append (new Templates.TaskButton "afro", 15).dom
-    taskDom.append (new Templates.TaskButton "dog", 1).dom

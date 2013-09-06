@@ -20,3 +20,13 @@ class window.Serializable
 
 class window.Errors 
     @declare: (name) -> Errors[name] = name
+    
+    
+window.writeObject = (name, value) ->
+    localStorage[name] = JSON.stringify value
+    
+window.loadObject = (name, defaultResult) ->
+    try
+        JSON.parse localStorage[name]
+    catch error
+        defaultResult
