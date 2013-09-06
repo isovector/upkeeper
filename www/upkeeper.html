@@ -1,33 +1,12 @@
 <html>
 <head>
+<link rel="stylesheet" href="css/fonts/stylesheet.css" type="text/css" charset="utf-8" />
+<script src="js/jquery.js"></script>
 <script src="js/angular.min.js"></script>
+<link rel="stylesheet" href="css/upkeeper.css" type="text/css" />
 </head>
 <body>
 
-<style type="text/css">
-.task {
-    border: 1px solid #000;
-    margin: 0.25em;
-    width: 50px;
-    height: 50px;
-}
-
-.taskList {
-    width: 300px;
-}
-
-.panel-false {
-    display: none;
-}
-
-.points {
-    float: right;
-    color: grey;
-}
-</style>
-
-
-<script src="js/jquery.js"></script>
 <script src="coffee/library.js"></script>
 <script src="coffee/beeminder.js"></script>
 <script src="coffee/templates.js"></script>
@@ -35,13 +14,6 @@
 <script src="coffee/task.js"></script>
 
 <div ng-app ng-controller="TaskCtrl">
-    <ul class="taskList">
-        <li ng-repeat="task in tasks">
-            <input type="button" ng-click="submit(task)" value="+" />
-            {{task.text}} <span class="points">{{task.points}} points</span>
-        </li>
-    </ul>
-    
     [<a href="" ng-click="showPanel()" >add</a>]
     
     <div class="panel-{{panelVisible}}">
@@ -50,9 +22,23 @@
             <input type="text" ng-model="newText" placeholder="task name" />
             <input type="number" ng-model="newPoints" value="1" step="any" />
             <input type="checkbox" ng-model="newCountable" />
+            <br />
+
+            <!--
+            <img src="img/icons/{{newIcon}}.png" class="selected-{{newIcon}}" />
+            
+            <select ng-model="newIcon">
+                <option ng-repeat="icon in icons">{{icon}}</option>
+            </select>-->
             <input type="submit" value="add" />
         </form>
     </div>
+
+    <ul class="taskList">
+        <li ng-repeat="task in tasks" class="task" ng-click="submit(task)">
+            {{task.text}} <span class="points">{{task.points}}</span>
+        </li>
+    </ul>
 </div>
 
 <div class="output"></div>

@@ -1,0 +1,62 @@
+/* http://colorschemedesigner.com/#2X42cw0w0w0w0 */
+
+.task {
+	height: 72px;
+	width: 72px;
+	border: 1px solid #FFBD40;
+	color: #FFBD40;
+	
+	background-color: #A61D00;
+	display: block;
+	float: left;
+	position: relative;
+	overflow: hidden;
+	padding: 5px;
+	
+}
+
+img {
+	vertical-align: top;
+}
+
+img.selected- {
+	visibility: hidden;
+	width: 72px;
+	height: 72px;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 0;
+	display: block;
+}
+
+input[type=number] {
+	width: 5em;
+}
+
+input[type=button] {
+	background-color: #4575D4;
+	border: none;
+}
+
+.taskList {
+    width: 400px;
+}
+
+.panel-false {
+    display: none;
+}
+
+.points {
+	position: absolute;
+    color: #FF6140;
+	bottom: 0.25em;
+	right: 0.25em;
+	font-size: 10pt;
+}
+
+body {
+	background-color: #00782D;
+	/*font-family: 'webhostinghub-glyphsregular';*/
+}
