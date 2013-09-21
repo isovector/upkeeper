@@ -43,9 +43,6 @@ window.BeeminderCtrl = ($scope) ->
                 value: task.points * count
                 comment: task.text
 
-        @sortData = (a, b) ->
-            b.value - a.value
-
         @pushData = ->
             for slug, sdata of data
                 points = 
@@ -64,7 +61,7 @@ window.BeeminderCtrl = ($scope) ->
                     { }
                 
                 sdata = ({ comment: comment, value: value } for comment, value of sdata)
-                sdata.sort @sortData
+                sdata.sort (a, b) -> b.value - a.value
                 
                 comment = (item.comment for item in sdata).slice(0, 5).join ", "
 
