@@ -14,11 +14,12 @@ window.TaskCtrl = ($scope) ->
         ###
         
         @submit = (task) ->
-            count = if task.countable then prompt("how many did you do?", "1") else 1
-            bee.addData task, count
+            if bee?
+                count = if task.countable then prompt("how many did you do?", "1") else 1
+                bee.addData task, count
             
         @newTask = () ->
-            @tasks.push { text: @newText, points: @newPoints, countable: @newCountable }
+            @tasks.push { text: @newText, points: @newPoints, countable: @newCountable, slug: @newSlug }
             writeObject "TaskCtrl.tasks", @tasks
             
             @newText = @newPoints = @newCountable = ""
