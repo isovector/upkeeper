@@ -1,7 +1,5 @@
-$ ->
-    taskDom = $ ".options"
-    taskDom.append (new Templates.Option "submit score",
-        ->
-            bee.pushData "upkeep-test"
-    ).dom
-    
+window.angular.module("upkeeper", []).directive 'eatClick', 
+    () ->
+        (scope, element, attrs) -> 
+            $(element).click () ->
+                event.stopPropagation()

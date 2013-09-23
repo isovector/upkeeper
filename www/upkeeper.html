@@ -13,10 +13,17 @@
 <script src="coffee/app.js"></script>
 <script src="coffee/task.js"></script>
 
-<div ng-app ng-controller="BeeminderCtrl">
+<div ng-app="upkeeper" ng-controller="BeeminderCtrl">
 
     <div ng-controller="TaskCtrl">
-        [<a href="" ng-click="showPanel()" >add</a>]
+        [<a href="" ng-click="togglePanel()">add</a>]
+        [<a href="" ng-click="toggleDelete()">delete</a>]
+        
+        <div class="delete-{{deleteMode}}">
+            <form ng-submit="deleteTasks()">
+                <input type="submit" value="delete" />
+            </form>
+        </div>
         
         <div class="panel-{{panelVisible}}">
             <label><input type="checkbox" ng-model="batchAdd" /> batch add</label>
@@ -30,12 +37,6 @@
                     <option ng-repeat="slug in slugs">{{slug}}</option>
                 </select>
 
-                <!--
-                <img src="img/icons/{{newIcon}}.png" class="selected-{{newIcon}}" />
-                
-                <select ng-model="newIcon">
-                    <option ng-repeat="icon in icons">{{icon}}</option>
-                </select>-->
                 <input type="submit" value="add" />
             </form>
         </div>
@@ -43,6 +44,7 @@
         <ul class="taskList">
             <li ng-repeat="task in tasks" class="task" ng-click="submit(task)">
                 {{task.text}} <span class="points">{{task.points}}</span>
+                <input type="checkbox" ng-model="task.toDelete" class="delete-{{deleteMode}}" eat-click />
             </li>
         </ul>
     </div>
@@ -53,11 +55,6 @@
         <input type="text" ng-model="token" />
         <input type="submit" /><br />
     </form>
-
-
-
-    <ul class="options">
-    </ul>
 
     <ul class="tasks">
     </ul>

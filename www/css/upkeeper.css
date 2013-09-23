@@ -40,6 +40,16 @@ input[type=button] {
 	border: none;
 }
 
+input[type=checkbox] {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.delete-false {
+	display: none;
+}
+
 .taskList {
     width: 400px;
 }
