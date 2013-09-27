@@ -2,12 +2,11 @@ client = "dq9sejip1qpbyipnp5gitc724"
 base = "https://www.beeminder.com/api/v1"
 
 window.BeeminderCtrl = ($scope) ->
-    data = loadObject "Beeminder.data", { }
-
     $scope._init = ->
         @token = loadObject "Beeminder.token", ""
         @slugs = [ ]
         @authenticated = false
+        @data = loadObject "Beeminder.data", { }
 
         @call = (url, success, payload, error) ->
             method = if payload? then 'POST' else 'GET'
@@ -37,14 +36,14 @@ window.BeeminderCtrl = ($scope) ->
             
         @addData = (task, count = 1) ->
             slug = task.slug
-            data[slug] = [ ] unless data[slug]?
-            data[slug].push
+            @data[slug] = [ ] unless @data[slug]?
+            @data[slug].push
                 timestamp: @constructTimestamp()
                 value: task.points * count
                 comment: task.text
 
         @pushData = ->
-            for slug, sdata of data
+            for slug, sdata of @data
                 points = 
                     sdata.reduce (x, item) -> 
                         x + item.value
@@ -65,10 +64,13 @@ window.BeeminderCtrl = ($scope) ->
                 
                 comment = (item.comment for item in sdata).slice(0, 5).join ", "
 
+                localPoints = points
+                localSlug = slug
                 @call "/users/me/goals/#{slug}/datapoints.json",
                     (datapoint) =>
-                        alert "pushed #{points} to #{slug}"
-                        data[slug] = null
+                        alert "pushed #{localPoints} to #{localSlug}"
+                        delete @data[slug]
+                        @$apply()
                     , 
                     {
                         timestamp: @constructTimestamp()
@@ -80,7 +82,7 @@ window.BeeminderCtrl = ($scope) ->
                         
         $(window).bind "beforeunload", () =>
             @pushData()
-            return "autosaving..." unless Object.keys(data).length == 0
+            return "autosaving..." unless Object.keys(@data).length == 0
                     
     window.bee = $scope
     $scope._init()

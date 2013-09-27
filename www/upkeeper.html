@@ -9,7 +9,6 @@
 
 <script src="coffee/library.js"></script>
 <script src="coffee/beeminder.js"></script>
-<script src="coffee/templates.js"></script>
 <script src="coffee/app.js"></script>
 <script src="coffee/task.js"></script>
 
@@ -49,16 +48,21 @@
         </ul>
     </div>
 
-    <div class="output"></div>
-
     <form ng-submit="authenticate()">
         <input type="text" ng-model="token" />
         <input type="submit" /><br />
     </form>
 
-    <ul class="tasks">
-    </ul>
-
+    <div>
+        <div ng-repeat="(slug, sdata) in data">
+            <h1>{{slug}}</h1>
+            <ul>
+                <li ng-repeat="task in data[slug] | orderBy:'value':true">
+                    {{task.comment}} ({{task.value}})
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 </body>

@@ -40,7 +40,7 @@ input[type=button] {
 	border: none;
 }
 
-input[type=checkbox] {
+.task input[type=checkbox] {
 	position: absolute;
 	top: 0;
 	right: 0;
