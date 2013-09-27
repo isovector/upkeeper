@@ -1,6 +1,11 @@
 client = "dq9sejip1qpbyipnp5gitc724"
 base = "https://www.beeminder.com/api/v1"
 
+getSdataScore = (sdata) ->
+    sdata.reduce (x, item) ->
+        x + item.value
+    , 0
+
 window.BeeminderCtrl = ($scope) ->
     $scope._init = ->
         @token = loadObject "Beeminder.token", ""
@@ -33,7 +38,9 @@ window.BeeminderCtrl = ($scope) ->
         
         @constructTimestamp = ->
             Date.now()/1000|0
-            
+        
+        @getSlugValue = (slug) -> getSdataScore @data[slug]
+        
         @addData = (task, count = 1) ->
             slug = task.slug
             @data[slug] = [ ] unless @data[slug]?
@@ -41,14 +48,15 @@ window.BeeminderCtrl = ($scope) ->
                 timestamp: @constructTimestamp()
                 value: task.points * count
                 comment: task.text
+        
+        @deleteData = (slug, task) ->
+            sdata = @data[slug]
+            sdata.splice sdata.indexOf(task), 1
+            delete @data[slug] if sdata.length == 0
 
         @pushData = ->
             for slug, sdata of @data
-                points = 
-                    sdata.reduce (x, item) -> 
-                        x + item.value
-                    , 0
-                    
+                points = getSdataScore sdata
                 continue if points == 0
                 
                 sdata = 
@@ -64,25 +72,24 @@ window.BeeminderCtrl = ($scope) ->
                 
                 comment = (item.comment for item in sdata).slice(0, 5).join ", "
 
-                localPoints = points
-                localSlug = slug
-                @call "/users/me/goals/#{slug}/datapoints.json",
-                    (datapoint) =>
-                        alert "pushed #{localPoints} to #{localSlug}"
-                        delete @data[slug]
-                        @$apply()
-                    , 
-                    {
-                        timestamp: @constructTimestamp()
-                        value: points
-                        comment: comment
-                    },
-                    () =>
-                        alert "failed to connect to beeminder"
+                do (slug, points) =>
+                    @call "/users/me/goals/#{slug}/datapoints.json",
+                        (datapoint) =>
+                            alert "pushed #{points} to #{slug}"
+                            delete @data[slug]
+                            @$apply()
+                        , 
+                        {
+                            timestamp: @constructTimestamp()
+                            value: points
+                            comment: comment
+                        },
+                        () =>
+                            alert "failed to connect to beeminder"
                         
         $(window).bind "beforeunload", () =>
-            @pushData()
-            return "autosaving..." unless Object.keys(@data).length == 0
+            #@pushData()
+            #return "autosaving..." unless Object.keys(@data).length == 0
                     
     window.bee = $scope
     $scope._init()

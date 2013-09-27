@@ -50,15 +50,16 @@
 
     <form ng-submit="authenticate()">
         <input type="text" ng-model="token" />
-        <input type="submit" /><br />
+        <input type="submit" value"login" /><br />
+        <input type="button" value="submit" ng-click="pushData()" />
     </form>
 
     <div>
         <div ng-repeat="(slug, sdata) in data">
-            <h1>{{slug}}</h1>
+            <h1>{{slug}} ({{getSlugValue(slug)}})</h1>
             <ul>
                 <li ng-repeat="task in data[slug] | orderBy:'value':true">
-                    {{task.comment}} ({{task.value}})
+                    <input type="button" value="-" ng-click="deleteData(slug, task)" /> {{task.comment}} ({{task.value}})
                 </li>
             </ul>
         </div>
