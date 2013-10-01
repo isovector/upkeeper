@@ -42,12 +42,14 @@ window.BeeminderCtrl = ($scope) ->
         @getSlugValue = (slug) -> getSdataScore @data[slug]
         
         @addData = (task, count = 1) ->
-            slug = task.slug
-            @data[slug] = [ ] unless @data[slug]?
-            @data[slug].push
-                timestamp: @constructTimestamp()
-                value: task.points * count
-                comment: task.text
+            for item in task.items
+                do =>
+                    slug = item.slug
+                    @data[slug] = [ ] unless @data[slug]?
+                    @data[slug].push
+                        timestamp: @constructTimestamp()
+                        value: item.points * count
+                        comment: task.comment
         
         @deleteData = (slug, task) ->
             sdata = @data[slug]

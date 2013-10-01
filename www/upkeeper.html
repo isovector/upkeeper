@@ -25,24 +25,27 @@
         </div>
         
         <div class="panel-{{panelVisible}}">
-            <label><input type="checkbox" ng-model="batchAdd" /> batch add</label>
             <form ng-submit="newTask()">
-                <input type="text" ng-model="newText" placeholder="task name" />
-                <input type="number" ng-model="newPoints" value="1" step="any" />
-                <input type="checkbox" ng-model="newCountable" />
-                <br />
+                <input type="text" ng-model="newName" placeholder="task name" /> <label><input type="checkbox" ng-model="newCountable" /> countable?</label>
+            
+                <div ng-repeat="item in items">
+                    <input type="number" ng-model="item.points" value="1" step="any" />
+
+                    <select class="slugs" ng-model="item.slug">
+                        <option ng-repeat="slug in slugs">{{slug}}</option>
+                    </select>
+                </div>
                 
-                <select class="slugs" ng-model="newSlug">
-                    <option ng-repeat="slug in slugs">{{slug}}</option>
-                </select>
+                <input type="button" value="+" ng-click="addItem()" /> <br /> &nbsp; <br />
 
                 <input type="submit" value="add" />
+                <label><input type="checkbox" ng-model="batchAdd" /> batch add</label>
             </form>
         </div>
 
         <ul class="taskList">
             <li ng-repeat="task in tasks" class="task" ng-click="submit(task)">
-                {{task.text}} <span class="points">{{task.points}}</span>
+                {{task.comment}}
                 <input type="checkbox" ng-model="task.toDelete" class="delete-{{deleteMode}}" eat-click />
             </li>
         </ul>
